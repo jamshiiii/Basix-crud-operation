@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Databinding 10</title>
+
+    <style>
+        #container{
+            text-align: center;
+
+        }
+
+        th{
+            background-color: aqua;
+        }
+
+        #container tr:nth-child(even){
+            background-color: blue;
+        }
+
+        #container tr:nth-child(odd):hover{
+            background-color: orange;
+        }
+
+        button{
+            background-color: red;
+            color:white;
+            border-radius: 5px;
+        }
+    </style>
+
+    <script>
+      var book = [
+        { name: "html", price: 300, qty: 10 },
+        { name: "css", price: 400, qty: 13 },
+        { name: "javascript", price: 500, qty: 12 },
+        { name: "jquery", price: 800, qty: 16 },
+        { name: "Angular", price: 900, qty: 13 },
+        { name: "React", price: 200, qty: 12 },
+      ];
+      
+
+      function getItem(){
+        var data = "";
+        book.map((bookinfo, index) => {
+            data += "<tr>";
+                data += "<td>"+index+"</td>"
+                data += "<td>"+bookinfo.name+"</td>"
+                data += "<td>"+bookinfo.price+"</td>"
+                data += "<td>"+bookinfo.qty+"</td>"
+                data += "<td> <button onclick=deleteBook("+index+")>Delete</button> </td>";
+            data += "</tr>";
+        })
+        document.getElementById("container").innerHTML = data;
+        document.getElementById("total").innerText = book.length;
+      }
+
+      function deleteBook (bookindex){
+        var status = confirm("Are You Sure ?");
+        if(status == true){
+            book.splice(bookindex, 1)
+            getItem(); // callback the listing function
+        }
+      }
+
+      function save (){
+        var bname = document.getElementById("bookname").value;
+        var bprice = document.getElementById("bookprice").value;
+        var bqty = document.getElementById("bookqty").value;
+        var newbook = { name:bname, price:bprice, qty:bqty };
+        book = book.concat(newbook); // add new element at the end of the array
+        getItem(); // callback the listing function to reload the list after adding
+
+        document.getElementById("bookname").value="";
+        document.getElementById("bookprice").value="";
+        document.getElementById("bookqty").value=""
+      }
+
+      
+    </script>
+  </head>
+  <body onload="getItem()">
+    <h1 align="center">Add New Book</h1>
+    <div align="center">
+        <input type="text" id="bookname" placeholder="Enter Book Name" />
+        <input type="number" id="bookprice" placeholder="Enter Book price" />
+        <input type="number" id="bookqty" placeholder="Enter Book qty" />
+        <button style = "background-color: green;"onclick="save()">Save Book</button>
+    </div>
+    <h1 align="center"> <label id="total">0</label> :Javascript html array binding</h1>
+        <table align="center" cellpadding="15" cellspacing="0" border="1" bordercolor="orange" width="70%">
+          <thead>
+            <tr>
+                <th>Book Index No</th>
+                <th>Book Name</th>
+                <th>Book Price</th>
+                <th>Book Qty</th>
+                <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="container">
+
+          </tbody>
+        </table>
+  </body>
+</html>
